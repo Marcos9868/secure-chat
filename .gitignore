@@ -1,0 +1,64 @@
+# =========================
+# Build artifacts
+# =========================
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+*.ninja
+*.cmake
+compile_commands.json
+
+# =========================
+# Binaries
+# =========================
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
+
+# =========================
+# Editor / IDE files
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Qt Creator
+*.pro.user
+*.qmlc
+*.jsc
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Project sensitive data
+# =========================
+data/
+keys/
+identities/
+history/
+*.key
+*.pem
+*.priv
+*.pub
+
+# =========================
+# Test artifacts
+# =========================
+tests/output/
+tests/tmp/
