@@ -15,17 +15,15 @@ add_compile_options(
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SODIUM REQUIRED libsodium)
 
+add_subdirectory(src/core/crypto)
+add_subdirectory(src/core/identity)
+
 add_executable(secure_chat
   src/main.cpp
-  src/core/identity/identity.cpp
-  src/core/crypto/crypto.cpp
 )
 
 target_include_directories(secure_chat PRIVATE
-  src
-  ${SODIUM_INCLUDE_DIRS}
+  ${SODIUM_INCLUDE_DIRS}/src/core
 )
 
-target_link_libraries(secure_chat
-  ${SODIUM_LIBRARIES}
-)
+target_link_libraries(secure_chat secure_crypto secure_identity)
