@@ -190,3 +190,10 @@ Secure Chat exists to:
 > **Give people back control over their communications.**
 
 No surveillance. No tracking. No dependency.
+
+## Start commands
+
+```bash
+cmake -S . -B build -G Ninja
+ninja -C build
+```
