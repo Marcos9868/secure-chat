@@ -62,3 +62,9 @@ history/
 # =========================
 tests/output/
 tests/tmp/
+
+secure_chat
+build/
+
+# Caches
+src/cmake_install.cmake
