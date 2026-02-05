@@ -1,34 +1,49 @@
-#include "identity.h"
+#include "identity.hpp"
+#include "Fingerprint.hpp"
+
 #include <sodium.h>
-#include <stdexcept>
+#include <sstream>
+#include <iomanip>
 
-Identity Identity::Create() {
-  Identity id;
+namespace identity {
 
-  id.public_key_.resize(crypto_sign_PUBLICKEYBYTES);
-  id.private_key_.resize(crypto_sign_SECRETKEYBYTES);
+Identity::Identity(const PublicKey& publicKey)
+    : m_publicKey(publicKey),
+      m_fingerprint(Fingerprint::fromPublicKey(publicKey)),
+      m_userId(deriveUserId(publicKey)) {}
 
-  if (crypto_sign_keypair(id.public_key_.data(), id.private_key_.data()) != 0) {
-    throw std::runtime_error("Failed to generate keypair");
-  }
-
-  return id;
-};
-
-const std::vector<uint8_t>& Identity::public_key() const {
-  return public_key_;
+const Identity::PublicKey& Identity::publicKey() const {
+  return m_publicKey;
 }
 
-std::vector<uint8_t> Identity::sign(const std::vector<uint8_t>& data) const {
-  std::vector<uint8_t> signature(crypto_sign_BYTES);
+const std::string& Identity::fingerprint() const {
+  return m_fingerprint;
+}
 
-  crypto_sign_detached(
-    signature.data(),
-    nullptr,
-    data.data(),
-    data.size(),
-    private_key_.data()
+const std::string& Identity::userId() const {
+  return m_userId;
+}
+
+std::string Identity::deriveUserId(const PublicKey& publicKey) {
+  std::array<uint8_t, crypto_generichash_BYTES> hash{};
+
+  crypto_generichash(
+      hash.data(),
+      hash.size(),
+      publicKey.data(),
+      publicKey.size(),
+      nullptr,
+      0
   );
 
-  return signature;
-};
+  std::ostringstream oss;
+  for (auto b : hash) {
+    oss << std::hex << std::setw(2)
+        << std::setfill('0')
+        << static_cast<int>(b);
+  }
+
+  return oss.str();
+}
+
+}
