@@ -5,9 +5,10 @@
 #include "core/crypto/KeyPair.hpp"
 #include "core/identity/identity.hpp"
 #include "core/message/Message.hpp"
+#include "core/transport/LocalTransport.hpp"
 
 int main() {
-  crypto::CryptoInit::init();
+  /*crypto::CryptoInit::init();
 
   auto kp = crypto::KeyPair::generate();
   identity::Identity id(kp.publicKey());
@@ -21,6 +22,22 @@ int main() {
 
   std::cout << "From: " << msg.senderId() << "\n";
   std::cout << "To: " << msg.receiverId() << "\n";
-  std::cout << "Payload: " << msg.payload() << "\n";
- return 0;
+  std::cout << "Payload: " << msg.payload() << "\n";*/
+  transport::LocalTransport transport;
+
+  transport.connect();
+
+  std::vector<uint8_t> message = { 'H', 'e', 'l', 'l', 'o' };
+  transport.send(message);
+
+  auto received = transport.receive();
+
+  std::cout << "Received bytes: ";
+  for (auto c : received) {
+    std::cout << static_cast<char>(c);
+  }
+  std::cout << std::endl;
+
+  transport.close();
+  return 0;
 }
