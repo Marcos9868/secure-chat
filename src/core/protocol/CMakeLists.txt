@@ -1,0 +1,3 @@
+add_library(secure_protocol STATIC Packet.cpp)
+target_include_directories(secure_protocol PUBLIC ${CMAKE_CURRENT_SOURCE_DIR1})
+target_link_libraries(secure_protocol PUBLIC sodium)
