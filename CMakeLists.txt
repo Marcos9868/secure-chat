@@ -18,6 +18,7 @@ pkg_check_modules(SODIUM REQUIRED libsodium)
 add_subdirectory(src/core/crypto)
 add_subdirectory(src/core/identity)
 add_subdirectory(src/core/message)
+add_subdirectory(src/core/transport)
 
 add_executable(secure_chat
   src/main.cpp
@@ -27,4 +28,4 @@ target_include_directories(secure_chat PRIVATE
   ${SODIUM_INCLUDE_DIRS}/src/core
 )
 
-target_link_libraries(secure_chat secure_crypto secure_identity secure_message)
+target_link_libraries(secure_chat secure_crypto secure_identity secure_message secure_transport)
